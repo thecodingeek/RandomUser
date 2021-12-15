@@ -9,7 +9,11 @@
         android:id="@+id/listingOfUsersFragment"
         android:name="com.randomuser.app.fragments.list.ListingOfUsersFragment"
         android:label="listing_of_users_fragment"
-        tools:layout="@layout/listing_of_users_fragment" />
+        tools:layout="@layout/listing_of_users_fragment" >
+        <action
+            android:id="@+id/action_listingOfUsersFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/userDetailFragment"
