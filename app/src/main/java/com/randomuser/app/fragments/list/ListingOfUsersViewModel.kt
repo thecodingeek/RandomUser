@@ -1,6 +1,7 @@
 package com.randomuser.app.fragments.list
 
 import android.app.Application
+import androidx.compose.runtime.*
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,22 +20,29 @@ class ListingOfUsersViewModel @Inject constructor(application: Application, priv
         get() = getApplication<Application>()
 
     private val showNoInternet: MutableLiveData<Boolean> = MutableLiveData(false)
-    private val loading = MutableLiveData<Boolean>()
-    private val usersList = MutableLiveData<List<User>>()
+    var loading: MutableState<Boolean> = mutableStateOf(false)
+
+    private val mutableUsersList = mutableStateListOf<User>()
+    val usersList: List<User>
+        get() = mutableUsersList
 
     private var job: Job? = null
-    private val errorMessage = MutableLiveData<String>()
+    var errorMessage: String by mutableStateOf("")
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         onApiError("Exception: ${throwable.localizedMessage}")
     }
 
     fun getUsers() {
         if(isInternetAvailable(context)) {
+            loading.value = true
             job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                 val response = usersRepository.getAllUsers()
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        usersList.postValue(response.body()?.results)
+                        response.body()?.let {
+                            mutableUsersList.clear()
+                            mutableUsersList.addAll(it.results)
+                        }
                         loading.value = false
                     } else {
                         onApiError("Error : ${response.message()} ")
@@ -47,8 +55,8 @@ class ListingOfUsersViewModel @Inject constructor(application: Application, priv
     }
 
     private fun onApiError(message: String) {
-        errorMessage.postValue(message)
-        loading.postValue(false)
+        errorMessage = message
+        loading.value = false
     }
 
     override fun onCleared() {
@@ -62,9 +70,5 @@ class ListingOfUsersViewModel @Inject constructor(application: Application, priv
 
     fun setShowNoInternet(showNoInternet: Boolean) {
         this.showNoInternet.value = showNoInternet
-    }
-
-    fun getUsersList(): LiveData<List<User>> {
-        return usersList
     }
 }
