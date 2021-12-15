@@ -17,6 +17,5 @@
     <fragment
         android:id="@+id/userDetailFragment"
         android:name="com.randomuser.app.fragments.detail.UserDetailFragment"
-        android:label="user_detail_fragment"
-        tools:layout="@layout/user_detail_fragment" />
+        android:label="user_detail_fragment" />
 </navigation>

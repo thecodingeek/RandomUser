@@ -32,7 +32,11 @@ class ListingOfUsersViewModel @Inject constructor(application: Application, priv
         onApiError("Exception: ${throwable.localizedMessage}")
     }
 
-    fun getUsers() {
+    init {
+        getUsers()
+    }
+
+    private fun getUsers() {
         if(isInternetAvailable(context)) {
             loading.value = true
             job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {

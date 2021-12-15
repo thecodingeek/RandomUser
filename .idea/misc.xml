@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2223731884057971" />
         <entry key="app/src/main/res/layout/listing_of_users_fragment.xml" value="0.2223731884057971" />
+        <entry key="app/src/main/res/layout/user_detail_fragment.xml" value="0.2223731884057971" />
       </map>
     </option>
   </component>

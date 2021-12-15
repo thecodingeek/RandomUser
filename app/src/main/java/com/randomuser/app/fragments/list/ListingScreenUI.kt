@@ -1,5 +1,10 @@
 package com.randomuser.app.fragments.list
 
+import android.os.Bundle
+import android.util.Log
+import androidx.compose.animation.*
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -14,13 +19,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
+import com.randomuser.app.R
 import com.randomuser.app.data.User
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun ListingScreenUI (
-    viewModel: ListingOfUsersViewModel
+    viewModel: ListingOfUsersViewModel,
+    onNavigate: (Int, Bundle) -> Unit
 ) {
     Scaffold(
         content = {
@@ -36,7 +44,13 @@ fun ListingScreenUI (
                 if (viewModel.errorMessage.isEmpty()) {
                     LazyColumn {
                         items(viewModel.usersList) { user ->
-                            UserCard(user)
+                            Box(Modifier.clickable(onClick = {
+//                                Log.d("RandomUser", "Clicked")
+                                val bundle = bundleOf("user" to user)
+                                onNavigate(R.id.userDetailFragment, bundle)
+                            })) {
+                                UserCard(user)
+                            }
                         }
                     }
                 } else {
@@ -66,7 +80,6 @@ fun UserCard(user: User) {
                 Text(text = user.name.title + " " + user.name.first + " " + user.name.last, style = typography.h6)
                 Text(text = user.gender, style = typography.caption)
                 Text(text = user.location.city, style = typography.caption)
-
             }
         }
     }
