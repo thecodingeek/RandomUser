@@ -1,6 +1,7 @@
 package com.randomuser.app.fragments.list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +16,6 @@ class ListingOfUsersFragment : Fragment() {
 
     private val viewModel: ListingOfUsersViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.getUsers()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,11 +23,18 @@ class ListingOfUsersFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.listing_of_users_fragment, container, false)
 
         initObservers()
+        viewModel.getUsers()
 
         return view
     }
 
     private fun initObservers() {
+        viewModel.getUsersList().observe(viewLifecycleOwner, {
+            if(it != null) {
+                
+            }
+        })
+
         viewModel.getShowNoInternet().observe(viewLifecycleOwner, {
             if (it) {
                 viewModel.setShowNoInternet(false)
