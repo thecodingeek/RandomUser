@@ -47,7 +47,7 @@ fun ListingScreenUI (
                             Box(Modifier.clickable(onClick = {
 //                                Log.d("RandomUser", "Clicked")
                                 val bundle = bundleOf("user" to user)
-                                onNavigate(R.id.userDetailFragment, bundle)
+                                onNavigate(R.id.action_listingOfUsersFragment_to_userDetailFragment, bundle)
                             })) {
                                 UserCard(user)
                             }
